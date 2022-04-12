@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping
 class GameController(private val service: GameService) {
 
     @GetMapping("/game/{id}")
