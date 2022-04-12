@@ -3,11 +3,17 @@ package lise.uebungsprojekt.gamePlatform
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.web.servlet.config.annotation.CorsRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import org.springframework.transaction.annotation.EnableTransactionManagement
+import javax.sql.DataSource
+import org.jetbrains.exposed.spring.SpringTransactionManager
 
 @SpringBootApplication
-class GamePlatformApplication
+@EnableTransactionManagement
+class GamePlatformApplication{
+	@Bean
+	open fun transactionManager(dataSource: DataSource) = SpringTransactionManager(dataSource)
+
+}
 
 fun main(args: Array<String>) {
 	runApplication<GamePlatformApplication>(*args)

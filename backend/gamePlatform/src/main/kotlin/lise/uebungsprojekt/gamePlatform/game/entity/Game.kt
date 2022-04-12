@@ -1,4 +1,4 @@
-package lise.uebungsprojekt.gamePlatform.data
+package lise.uebungsprojekt.gamePlatform.game.entity
 
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Table
@@ -13,10 +13,10 @@ enum class GameRating(val numStar: Int) {
     FIVE(5)
 }
 
-object Games : Table() {
+object Games : Table("Games") {
     val id = integer("id").autoIncrement()
     val name = varchar("Titel", 40)
-    val publishingDate = date("Erscheinungsdatum")
+    val releaseDate = date("Erscheinungsdatum")
     val developer = varchar("Entwickler", 20)
 
     override val primaryKey = PrimaryKey(id)
@@ -24,7 +24,7 @@ object Games : Table() {
 
 data class Game(val id: Int, val title: String, val releaseDate: LocalDate, val developer: String)
 
-object Ratings : IntIdTable() {
+object Ratings : IntIdTable("Ratings") {
     val rating = enumeration("Bewertung", GameRating::class)
     val comment = varchar("Kommentar", 100)
     val ratedGame = (integer("Spiele_ID").references(Games.id))

@@ -1,6 +1,6 @@
-package lise.uebungsprojekt.gamePlatform.controller
+package lise.uebungsprojekt.gamePlatform.game.controller
 
-import lise.uebungsprojekt.gamePlatform.data.LoginData
+import lise.uebungsprojekt.gamePlatform.game.entity.LoginData
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
