@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 export interface IGameData {
     id: number;
@@ -7,50 +7,48 @@ export interface IGameData {
     developer: string;
 }
 
-export interface IProps {
+export interface IGameTableProps {
     url?: string;
 }
 
-export class GameTable extends React.Component<IProps, IGameData[]> {
-    constructor(props: IProps) {
-        super(props);
-        this.state = [];
-    }
+export function GameTable(props: IGameTableProps) {
+    const [games, setGames] = useState([])
+    const requestUrl = props.url? props.url : "/game";
+    
+    useEffect(() => {
+        const fetchGames = async(url: string) => {
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json"
+                }
+            });
 
-    async componentDidMount() {
-        const requestUrl = this.props.url? this.props.url : "/Games/1";
-        const response = await fetch(requestUrl, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            mode: "cors"
-          });
-          
-          let data = await response.json();
-          // In case, response contains one single element
-          if(data.constructor.name !== "Array"){
-              data = [data]
-          }
-          this.setState(data);
-    }
+            let data = await response.json();
+            // In case, response contains one single element
+            if(data.constructor.name !== "Array"){
+                data = [data]
+            }
+            setGames(data);
+        }
+        
+        fetchGames(requestUrl).catch(console.error);
+    }, [requestUrl])
 
-    render() {
-        return (
-            <table>
-                <thead>
-                    <tr>
-                        <th>Titel</th>
-                        <th>Erscheinungsdatum</th>
-                        <th>Entwickler</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {gameData(this.state)}
-                </tbody>
-            </table>
-        );
-    }
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <th>Titel</th>
+                    <th>Erscheinungsdatum</th>
+                    <th>Entwickler</th>
+                </tr>
+            </thead>
+            <tbody>
+                {gameData(games)}
+            </tbody>
+        </table>
+    );
 }
 
 function GameRow(props: IGameData): JSX.Element {
