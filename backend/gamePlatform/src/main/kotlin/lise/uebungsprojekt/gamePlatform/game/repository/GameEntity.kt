@@ -9,10 +9,10 @@ import javax.persistence.*
 data class GameEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long?,
-    val title: String,
-    val releaseDate: LocalDate,
-    val developer: String
+    val id: Long? = null,
+    val title: String = "",
+    val releaseDate: LocalDate = LocalDate.now(),
+    val developer: String = ""
 )
 
 fun GameEntity.toDomain(): Game = Game(
