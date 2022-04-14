@@ -8,7 +8,7 @@ import javax.persistence.*
 @Table(name = "games")
 data class GameEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long? = null,
     val title: String = "",
     val releaseDate: LocalDate = LocalDate.now(),

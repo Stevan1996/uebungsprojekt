@@ -13,10 +13,9 @@ fun Game.toEntity(): GameEntity = GameEntity(
     developer
 )
 
-fun Game.toDTO(ratingScore: Double = .0): GameDTO = GameDTO(
+fun Game.toDTO(): GameDTO = GameDTO(
     id,
     title,
     releaseDate,
-    developer,
-    ratingScore
+    developer
 )
