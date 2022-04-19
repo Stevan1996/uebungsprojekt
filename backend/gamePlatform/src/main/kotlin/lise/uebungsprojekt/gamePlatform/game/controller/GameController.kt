@@ -1,10 +1,7 @@
 package lise.uebungsprojekt.gamePlatform.game.controller
 
 import lise.uebungsprojekt.gamePlatform.game.repository.toDomain
-import lise.uebungsprojekt.gamePlatform.game.service.GameService
-import lise.uebungsprojekt.gamePlatform.game.service.RatingService
-import lise.uebungsprojekt.gamePlatform.game.service.toDTO
-import lise.uebungsprojekt.gamePlatform.game.service.toEntity
+import lise.uebungsprojekt.gamePlatform.game.service.*
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -14,15 +11,15 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping
-class GameController(private val gameService: GameService, private val ratingService: RatingService) {
+class GameController(private val gameService: GameService, private val ratedGameService: RatedGameService) {
 
     @GetMapping("/game/{id}")
     fun getGame(@PathVariable id: Long): GameDTO =
-        gameService.findById(id).toDTO(ratingService.calcRatingAverage(id))
+        ratedGameService.findById(id).toDTO()
 
     @GetMapping("/game")
     fun getAllGames(): List<GameDTO> =
-        gameService.findAll().map {it.toDTO(ratingService.calcRatingAverage(it.id!!))}
+        ratedGameService.findAll().map {it.toDTO()}
 
     @PostMapping("/game")
     fun saveGame(@RequestBody game: GameDTO): GameDTO {

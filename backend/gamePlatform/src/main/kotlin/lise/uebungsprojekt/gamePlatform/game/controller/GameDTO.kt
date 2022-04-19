@@ -16,5 +16,5 @@ fun GameDTO.toDomain(): Game = Game(
     title,
     releaseDate,
     developer,
-
+    avgRating
 )

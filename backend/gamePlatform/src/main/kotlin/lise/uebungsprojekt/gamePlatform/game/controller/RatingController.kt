@@ -13,12 +13,6 @@ class RatingController(private val service: RatingService) {
     fun getAllRatings(@PathVariable id: Long): List<RatingDTO> =
         service.findByGameId(id).map { it.toDTO() }
 
-    @GetMapping("/game/{id}/rating/average")
-    fun getRatingAverage(@PathVariable id: Long): Double = service.calcRatingAverage(id)
-
     @GetMapping("/game/all/rating")
     fun getAllRating(): List<RatingDTO> = service.findAll().map { it.toDTO() }
-
-    @GetMapping("/game/all/rating/average")
-    fun getAllRatingAverages(): Map<GameDTO, Double> = service.calcAllRatingAverages().mapKeys { it.key.toDTO() }
 }

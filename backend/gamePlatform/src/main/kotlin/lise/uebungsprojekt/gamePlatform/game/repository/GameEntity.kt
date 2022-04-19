@@ -15,9 +15,10 @@ data class GameEntity(
     val developer: String = ""
 )
 
-fun GameEntity.toDomain(): Game = Game(
+fun GameEntity.toDomain(ratingScore: Double = .0): Game = Game(
     id,
     title,
     releaseDate,
-    developer
+    developer,
+    ratingScore
 )
