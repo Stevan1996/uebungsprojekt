@@ -5,6 +5,7 @@ export interface IGameData {
     title: string;
     releaseDate: string;
     developer: string;
+    avgRating: number;
 }
 
 export interface IGameTableProps {
@@ -36,12 +37,13 @@ export function GameTable(props: IGameTableProps) {
     }, [requestUrl])
 
     return (
-        <table>
+        <table className="table mx-auto">
             <thead>
                 <tr>
                     <th>Titel</th>
                     <th>Erscheinungsdatum</th>
                     <th>Entwickler</th>
+                    <th>Bewertung</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,28 +54,43 @@ export function GameTable(props: IGameTableProps) {
 }
 
 function GameRow(props: IGameData): JSX.Element {
+    const ratingScore = Number.isNaN(Number(props.avgRating))? 0 : props.avgRating;
+
     return (
-        <tr key={props.id.toString()}>
+        <tr>
             <td>{props.title}</td>
             <td>{props.releaseDate}</td>
             <td>{props.developer}</td>
+            <td>{ratingScore}</td>
         </tr>
     );
 }
 
-function gameData(props: readonly IGameData[]): JSX.Element[] {
-    let games: JSX.Element[] = []
-    
-    for(let i = 0; i < Object.keys(props).length; ++i) {
-        games.push(
-        <GameRow id={props[i].id}
-        title={props[i].title} 
-        releaseDate={props[i].releaseDate} 
-        developer={props[i].developer}/>
+function gameData(props: Array<IGameData>): JSX.Element[] {
+    let gameRows: JSX.Element[] = []
+    // first sort by rating, then sort by date
+    let sortedProps = props.sort((obj1, obj2) => {
+        if (obj1.avgRating > obj2.avgRating || Number.isNaN(Number(obj2.avgRating))) {
+            return -1;
+        }
+        if (obj1.avgRating < obj2.avgRating || Number.isNaN(Number(obj1.avgRating))){
+            return 1;
+        }
+        
+        return Date.parse(obj2.releaseDate) - Date.parse(obj1.releaseDate);
+    });
+
+    for(let i = 0; i < sortedProps.length; ++i) {
+        gameRows.push(
+        <GameRow id={sortedProps[i].id}
+        title={sortedProps[i].title} 
+        releaseDate={sortedProps[i].releaseDate} 
+        developer={sortedProps[i].developer}
+        avgRating={sortedProps[i].avgRating}/>
         );
     }
 
-    return (games);
+    return (gameRows);
 }
 
 export default GameTable;
