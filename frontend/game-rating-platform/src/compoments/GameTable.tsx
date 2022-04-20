@@ -69,7 +69,7 @@ function GameRow(props: IGameData): JSX.Element {
 function gameData(props: Array<IGameData>): JSX.Element[] {
     let gameRows: JSX.Element[] = []
     // first sort by rating, then sort by date
-    let sortedProps = props.sort((obj1, obj2) => {
+    const sortedProps = props.sort((obj1, obj2) => {
         if (obj1.avgRating > obj2.avgRating || Number.isNaN(Number(obj2.avgRating))) {
             return -1;
         }
@@ -80,17 +80,15 @@ function gameData(props: Array<IGameData>): JSX.Element[] {
         return Date.parse(obj2.releaseDate) - Date.parse(obj1.releaseDate);
     });
 
-    for(let i = 0; i < sortedProps.length; ++i) {
-        gameRows.push(
-        <GameRow id={sortedProps[i].id}
-        title={sortedProps[i].title} 
-        releaseDate={sortedProps[i].releaseDate} 
-        developer={sortedProps[i].developer}
-        avgRating={sortedProps[i].avgRating}/>
-        );
-    }
-
-    return (gameRows);
+    return (
+        sortedProps.map<JSX.Element>((prop) => (
+            <GameRow id={prop.id}
+            title={prop.title}
+            releaseDate={prop.releaseDate}
+            developer={prop.developer}
+            avgRating={prop.avgRating}/>
+        ))
+    )
 }
 
 export default GameTable;
