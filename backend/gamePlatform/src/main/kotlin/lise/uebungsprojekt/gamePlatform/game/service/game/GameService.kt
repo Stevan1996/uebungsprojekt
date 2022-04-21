@@ -1,8 +1,8 @@
-package lise.uebungsprojekt.gamePlatform.game.service
+package lise.uebungsprojekt.gamePlatform.game.service.game
 
-import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
-import lise.uebungsprojekt.gamePlatform.game.repository.GameRepository
-import lise.uebungsprojekt.gamePlatform.game.repository.toDomain
+import lise.uebungsprojekt.gamePlatform.game.repository.game.GameEntity
+import lise.uebungsprojekt.gamePlatform.game.repository.game.GameRepository
+import lise.uebungsprojekt.gamePlatform.game.repository.game.toDomain
 import org.springframework.stereotype.Service
 
 interface GameService {
@@ -12,7 +12,7 @@ interface GameService {
 }
 
 @Service
-class GameServiceImpl(private val repo: GameRepository): GameService  {
+class GameServiceImpl(private val repo: GameRepository): GameService {
     override fun findAll() = repo.findAll().map {it.toDomain()}
     override fun findById(id: Long): Game {
         if (repo.existsById(id)) {

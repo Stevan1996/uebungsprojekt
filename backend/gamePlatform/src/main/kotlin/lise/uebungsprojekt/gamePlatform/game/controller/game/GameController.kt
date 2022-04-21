@@ -1,7 +1,10 @@
-package lise.uebungsprojekt.gamePlatform.game.controller
+package lise.uebungsprojekt.gamePlatform.game.controller.game
 
-import lise.uebungsprojekt.gamePlatform.game.repository.toDomain
-import lise.uebungsprojekt.gamePlatform.game.service.*
+import lise.uebungsprojekt.gamePlatform.game.repository.game.toDomain
+import lise.uebungsprojekt.gamePlatform.game.service.game.GameService
+import lise.uebungsprojekt.gamePlatform.game.service.game.RatedGameService
+import lise.uebungsprojekt.gamePlatform.game.service.game.toDTO
+import lise.uebungsprojekt.gamePlatform.game.service.game.toEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping

@@ -1,7 +1,7 @@
-package lise.uebungsprojekt.gamePlatform.game.repository
+package lise.uebungsprojekt.gamePlatform.game.repository.game
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RatingRepository : JpaRepository<RatingEntity, Int>
+interface GameRepository : JpaRepository<GameEntity, Long>

@@ -1,8 +1,8 @@
-package lise.uebungsprojekt.gamePlatform.game.service
+package lise.uebungsprojekt.gamePlatform.game.service.game
 
-import lise.uebungsprojekt.gamePlatform.game.repository.GameRepository
-import lise.uebungsprojekt.gamePlatform.game.repository.RatingRepository
-import lise.uebungsprojekt.gamePlatform.game.repository.toDomain
+import lise.uebungsprojekt.gamePlatform.game.repository.game.GameRepository
+import lise.uebungsprojekt.gamePlatform.game.repository.rating.RatingRepository
+import lise.uebungsprojekt.gamePlatform.game.repository.game.toDomain
 import org.springframework.stereotype.Service
 
 interface RatedGameService {
@@ -12,7 +12,8 @@ interface RatedGameService {
 
 @Service
 class RatedGameServiceImpl(private val gameRepo: GameRepository,
-                           private val ratingRepo: RatingRepository) : RatedGameService {
+                           private val ratingRepo: RatingRepository
+) : RatedGameService {
     private fun calcRatingAverage(id: Long) : Double =
         ratingRepo.findAll().filter {it.game.id == id}.map { it.rating.numStar }.average()
 
