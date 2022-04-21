@@ -4,7 +4,7 @@ export interface GameProps {
   id: number;
   title: string;
   releaseDate: string;
-  developer: string;
+  developer: string[];
   avgRating: number;
   platform: string;
 }
@@ -42,7 +42,9 @@ export function GameTable({
 
   let sortedProps = games;
   if (platformFilter !== "Alle") {
-    sortedProps.filter((prop) => prop.platform === platformFilter);
+    sortedProps = sortedProps.filter((prop) =>
+      prop.platform.includes(platformFilter)
+    );
   }
   // first sort by rating, then sort by date
   sortedProps = sortedProps.sort((obj1, obj2) => {
@@ -80,6 +82,7 @@ export function GameTable({
             releaseDate={prop.releaseDate}
             developer={prop.developer}
             avgRating={prop.avgRating}
+            platform={prop.platform}
           />
         ))}
       </tbody>

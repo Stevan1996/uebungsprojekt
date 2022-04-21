@@ -1,19 +1,14 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import GameTable from "./GameTable";
 
-interface PlatformProps {
-  id: number;
-  platform: string;
-}
-
 interface PlatformMenuProps {
   url?: string;
 }
 
 export default function PlatformMenu({
-  url = "/platforms",
+  url = "/game/platforms",
 }: PlatformMenuProps) {
-  const [platforms, setPlatforms] = useState<PlatformProps[]>([]);
+  const [platforms, setPlatforms] = useState<string[]>([]);
   const [buttonText, setButtonText] = useState<string>("Alle");
 
   useEffect(() => {
@@ -30,7 +25,7 @@ export default function PlatformMenu({
     };
 
     fetchPlatforms(url).catch(console.error);
-  });
+  }, [url]);
 
   function updateButtonText(e: SyntheticEvent<HTMLAnchorElement, Event>) {
     setButtonText(e.currentTarget.text);
@@ -54,10 +49,7 @@ export default function PlatformMenu({
         <div className="dropdown-menu" id="dropdown-menu" role="menu">
           <div className="dropdown-content">
             {platforms.map<JSX.Element>((prop) => (
-              <DropDownItem
-                platform={prop.platform}
-                selectHandler={updateButtonText}
-              />
+              <DropDownItem platform={prop} clickHandler={updateButtonText} />
             ))}
           </div>
         </div>
@@ -69,23 +61,23 @@ export default function PlatformMenu({
 
 interface DropDownProps {
   platform: string;
-  selectHandler: (arg: SyntheticEvent<HTMLAnchorElement, Event>) => void;
+  clickHandler: (arg: SyntheticEvent<HTMLAnchorElement, Event>) => void;
   withDivider?: boolean;
 }
 function DropDownItem({
   platform,
-  selectHandler,
+  clickHandler,
   withDivider = false,
 }: DropDownProps): JSX.Element {
   let divider: JSX.Element = <></>;
   if (withDivider) {
     divider = <hr className="dropdown-divider" />;
   }
-
+  console.log(platform);
   return (
     <>
       {divider}
-      <a href="#" className="dropdown-item" onSelect={selectHandler}>
+      <a href="#" className="dropdown-item" onClick={clickHandler}>
         {platform}
       </a>
     </>
