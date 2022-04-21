@@ -1,6 +1,7 @@
 package lise.uebungsprojekt.gamePlatform.game.repository.game
 
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.PlatformEntity
+import lise.uebungsprojekt.gamePlatform.game.repository.platform.toDomain
 import lise.uebungsprojekt.gamePlatform.game.service.game.Game
 import java.time.LocalDate
 import javax.persistence.*
@@ -24,5 +25,6 @@ fun GameEntity.toDomain(ratingScore: Double = .0): Game = Game(
     title,
     releaseDate,
     developer.map { it.toDomain() },
-    ratingScore
+    ratingScore,
+    platform.map {it.toDomain()}
 )

@@ -2,6 +2,7 @@ package lise.uebungsprojekt.gamePlatform.game.controller.game
 
 import lise.uebungsprojekt.gamePlatform.game.service.game.Developer
 import lise.uebungsprojekt.gamePlatform.game.service.game.Game
+import lise.uebungsprojekt.gamePlatform.game.service.platform.Platform
 import java.time.LocalDate
 
 data class GameDTO(
@@ -9,7 +10,8 @@ data class GameDTO(
     val title: String,
     val releaseDate: LocalDate,
     val developers: List<String>,
-    val avgRating: Double
+    val avgRating: Double,
+    val platform: List<String>
 )
 
 fun GameDTO.toDomain(): Game = Game(
@@ -17,5 +19,6 @@ fun GameDTO.toDomain(): Game = Game(
     title,
     releaseDate,
     developers.map { Developer(null, it) },
-    avgRating
+    avgRating,
+    platform.map { Platform(null, it) }
 )

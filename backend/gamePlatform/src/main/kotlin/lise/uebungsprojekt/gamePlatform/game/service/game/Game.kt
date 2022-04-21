@@ -2,6 +2,7 @@ package lise.uebungsprojekt.gamePlatform.game.service.game
 
 import lise.uebungsprojekt.gamePlatform.game.controller.game.GameDTO
 import lise.uebungsprojekt.gamePlatform.game.repository.game.GameEntity
+import lise.uebungsprojekt.gamePlatform.game.service.platform.Platform
 import java.time.LocalDate
 
 data class Game (
@@ -9,7 +10,8 @@ data class Game (
     val title: String,
     val releaseDate: LocalDate,
     val developers: List<Developer>,
-    val avgRating: Double
+    val avgRating: Double,
+    val platform: List<Platform>
 )
 
 fun Game.toEntity(): GameEntity = GameEntity(
@@ -24,5 +26,6 @@ fun Game.toDTO(): GameDTO = GameDTO(
     title,
     releaseDate,
     developers.map { it.developer },
-    avgRating
+    avgRating,
+    platform.map { it.platform }
 )
