@@ -9,8 +9,5 @@ import org.springframework.web.bind.annotation.RestController
 class PlatformController(private val service: PlatformService) {
 
     @GetMapping("/game/platforms")
-    fun getAllPlatforms(): List<String>{
-        println("received")
-        return service.findAll().map { it.toDTO() }
-    }
+    fun getAllPlatforms(): List<String> = service.findAll().map { it.toDTO() }
 }
