@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class RatingController(private val service: RatingService) {
 
-    @GetMapping("/game/{id}/rating")
+    @GetMapping("/game/{id}/ratings")
     fun getRatingsByGameId(@PathVariable id: Long): List<RatingDTO> =
         service.findByGameId(id).map { it.toDTO() }
 

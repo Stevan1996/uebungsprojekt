@@ -1,6 +1,6 @@
-package lise.uebungsprojekt.gamePlatform.game.repository.game
+package lise.uebungsprojekt.gamePlatform.game.repository
 
-import lise.uebungsprojekt.gamePlatform.game.service.game.Developer
+import lise.uebungsprojekt.gamePlatform.game.service.Developer
 import javax.persistence.*
 
 @Entity

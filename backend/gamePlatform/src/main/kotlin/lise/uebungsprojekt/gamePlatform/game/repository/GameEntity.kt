@@ -1,8 +1,8 @@
-package lise.uebungsprojekt.gamePlatform.game.repository.game
+package lise.uebungsprojekt.gamePlatform.game.repository
 
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.PlatformEntity
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.toDomain
-import lise.uebungsprojekt.gamePlatform.game.service.game.Game
+import lise.uebungsprojekt.gamePlatform.game.service.Game
 import java.time.LocalDate
 import javax.persistence.*
 

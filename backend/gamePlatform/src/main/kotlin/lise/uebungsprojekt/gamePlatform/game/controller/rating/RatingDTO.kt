@@ -1,6 +1,6 @@
 package lise.uebungsprojekt.gamePlatform.game.controller.rating
 
-import lise.uebungsprojekt.gamePlatform.game.repository.game.GameEntity
+import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
 import lise.uebungsprojekt.gamePlatform.game.repository.rating.GameRating
 import lise.uebungsprojekt.gamePlatform.game.service.rating.Rating
 

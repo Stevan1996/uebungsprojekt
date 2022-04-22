@@ -1,7 +1,7 @@
-package lise.uebungsprojekt.gamePlatform.game.controller.game
+package lise.uebungsprojekt.gamePlatform.game.controller
 
-import lise.uebungsprojekt.gamePlatform.game.service.game.Developer
-import lise.uebungsprojekt.gamePlatform.game.service.game.Game
+import lise.uebungsprojekt.gamePlatform.game.service.Developer
+import lise.uebungsprojekt.gamePlatform.game.service.Game
 import lise.uebungsprojekt.gamePlatform.game.service.platform.Platform
 import java.time.LocalDate
 

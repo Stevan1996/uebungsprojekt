@@ -1,19 +1,21 @@
-package lise.uebungsprojekt.gamePlatform.game.service.game
+package lise.uebungsprojekt.gamePlatform.game.service
 
-import lise.uebungsprojekt.gamePlatform.game.repository.game.GameRepository
+import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
+import lise.uebungsprojekt.gamePlatform.game.repository.GameRepository
 import lise.uebungsprojekt.gamePlatform.game.repository.rating.RatingRepository
-import lise.uebungsprojekt.gamePlatform.game.repository.game.toDomain
+import lise.uebungsprojekt.gamePlatform.game.repository.toDomain
 import org.springframework.stereotype.Service
 
-interface RatedGameService {
+interface GameService {
     fun findById(id: Long) : Game
     fun findAll() : List<Game>
+    fun save(game: GameEntity) : GameEntity
 }
 
 @Service
-class RatedGameServiceImpl(private val gameRepo: GameRepository,
+class GameServiceImpl(private val gameRepo: GameRepository,
                            private val ratingRepo: RatingRepository
-) : RatedGameService {
+) : GameService {
     private fun calcRatingAverage(id: Long) : Double =
         ratingRepo.findAll().filter {it.game.id == id}.map { it.rating.numStar }.average()
 
@@ -27,4 +29,6 @@ class RatedGameServiceImpl(private val gameRepo: GameRepository,
 
     override fun findAll() : List<Game> =
         gameRepo.findAll().map { it.toDomain(calcRatingAverage(it.id!!)) }
+
+    override fun save(game: GameEntity): GameEntity = gameRepo.save(game)
 }
