@@ -4,7 +4,7 @@ export interface GameProps {
   id: number;
   title: string;
   releaseDate: string;
-  developer: string[];
+  developers: string[];
   avgRating: number;
   platform: string;
 }
@@ -12,13 +12,17 @@ export interface GameProps {
 export interface GameTableProps {
   url?: string;
   platformFilter?: string;
+  searchString?: string;
 }
 
 export function GameTable({
   url = "/game",
   platformFilter = "Alle",
+  searchString = "",
 }: GameTableProps) {
-  const [games, setGames] = useState<GameProps[]>([]);
+  // cache original game data for filter operations
+  const [origGameData, setOrigGameData] = useState<GameProps[]>([]);
+  const [gameData, setGameData] = useState<GameProps[]>([]);
 
   useEffect(() => {
     const fetchGames = async (requestUrl: string) => {
@@ -34,29 +38,41 @@ export function GameTable({
       if (data.constructor.name !== "Array") {
         data = [data];
       }
-      setGames(data);
+      setOrigGameData(data);
     };
 
     fetchGames(url).catch(console.error);
-  }, [url, platformFilter]);
+  }, [url]);
 
-  let sortedProps = games;
-  if (platformFilter !== "Alle") {
-    sortedProps = sortedProps.filter((prop) =>
-      prop.platform.includes(platformFilter)
-    );
-  }
+  useEffect(() => {
+    setGameData(origGameData);
+    if (platformFilter !== "Alle") {
+      setGameData((games) =>
+        games.filter((prop) => prop.platform.includes(platformFilter))
+      );
+    }
+    if (searchString !== "") {
+      setGameData((games) =>
+        games.filter((prop) =>
+          prop.title.toLowerCase().includes(searchString.toLowerCase())
+        )
+      );
+    }
+  }, [origGameData, platformFilter, searchString]);
+
   // first sort by rating, then sort by date
-  sortedProps = sortedProps.sort((obj1, obj2) => {
+  const sortedProps = gameData.sort((obj1, obj2) => {
     if (
       obj1.avgRating > obj2.avgRating ||
-      Number.isNaN(Number(obj2.avgRating))
+      (Number.isNaN(Number(obj2.avgRating)) &&
+        !Number.isNaN(Number(obj1.avgRating)))
     ) {
       return -1;
     }
     if (
       obj1.avgRating < obj2.avgRating ||
-      Number.isNaN(Number(obj1.avgRating))
+      (Number.isNaN(Number(obj1.avgRating)) &&
+        !Number.isNaN(Number(obj2.avgRating)))
     ) {
       return 1;
     }
@@ -80,7 +96,7 @@ export function GameTable({
             id={prop.id}
             title={prop.title}
             releaseDate={prop.releaseDate}
-            developer={prop.developer}
+            developers={prop.developers}
             avgRating={prop.avgRating}
             platform={prop.platform}
           />
@@ -93,17 +109,19 @@ export function GameTable({
 function GameRow({
   id,
   avgRating,
-  developer,
+  developers,
   releaseDate,
   title,
 }: GameProps): JSX.Element {
   const ratingScore = Number.isNaN(Number(avgRating)) ? 0 : avgRating;
+  const developerStr =
+    developers !== undefined ? developers.join(", ") : undefined;
 
   return (
     <tr>
       <td>{title}</td>
       <td>{releaseDate}</td>
-      <td>{developer}</td>
+      <td>{developerStr}</td>
       <td>{ratingScore}</td>
     </tr>
   );
