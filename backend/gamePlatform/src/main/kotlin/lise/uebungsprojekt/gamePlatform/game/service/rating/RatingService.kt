@@ -1,8 +1,7 @@
-package lise.uebungsprojekt.gamePlatform.game.service
+package lise.uebungsprojekt.gamePlatform.game.service.rating
 
-import lise.uebungsprojekt.gamePlatform.game.repository.RatingRepository
-import lise.uebungsprojekt.gamePlatform.game.repository.toDomain
-import lise.uebungsprojekt.gamePlatform.game.repository.toRating
+import lise.uebungsprojekt.gamePlatform.game.repository.rating.RatingRepository
+import lise.uebungsprojekt.gamePlatform.game.repository.rating.toRating
 import org.springframework.stereotype.Service
 
 interface RatingService{

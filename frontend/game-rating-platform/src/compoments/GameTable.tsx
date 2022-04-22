@@ -4,15 +4,20 @@ export interface GameProps {
   id: number;
   title: string;
   releaseDate: string;
-  developer: string;
+  developer: string[];
   avgRating: number;
+  platform: string;
 }
 
 export interface GameTableProps {
   url?: string;
+  platformFilter?: string;
 }
 
-export function GameTable({ url = "/game" }: GameTableProps) {
+export function GameTable({
+  url = "/game",
+  platformFilter = "Alle",
+}: GameTableProps) {
   const [games, setGames] = useState<GameProps[]>([]);
 
   useEffect(() => {
@@ -33,10 +38,16 @@ export function GameTable({ url = "/game" }: GameTableProps) {
     };
 
     fetchGames(url).catch(console.error);
-  }, [url]);
+  }, [url, platformFilter]);
 
+  let sortedProps = games;
+  if (platformFilter !== "Alle") {
+    sortedProps = sortedProps.filter((prop) =>
+      prop.platform.includes(platformFilter)
+    );
+  }
   // first sort by rating, then sort by date
-  const sortedProps = games.sort((obj1, obj2) => {
+  sortedProps = sortedProps.sort((obj1, obj2) => {
     if (
       obj1.avgRating > obj2.avgRating ||
       Number.isNaN(Number(obj2.avgRating))
@@ -71,6 +82,7 @@ export function GameTable({ url = "/game" }: GameTableProps) {
             releaseDate={prop.releaseDate}
             developer={prop.developer}
             avgRating={prop.avgRating}
+            platform={prop.platform}
           />
         ))}
       </tbody>

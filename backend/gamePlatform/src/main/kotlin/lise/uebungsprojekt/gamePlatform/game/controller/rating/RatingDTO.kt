@@ -1,8 +1,8 @@
-package lise.uebungsprojekt.gamePlatform.game.controller
+package lise.uebungsprojekt.gamePlatform.game.controller.rating
 
 import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
-import lise.uebungsprojekt.gamePlatform.game.repository.GameRating
-import lise.uebungsprojekt.gamePlatform.game.service.Rating
+import lise.uebungsprojekt.gamePlatform.game.repository.rating.GameRating
+import lise.uebungsprojekt.gamePlatform.game.service.rating.Rating
 
 data class RatingDTO(
     val id: Int?,
