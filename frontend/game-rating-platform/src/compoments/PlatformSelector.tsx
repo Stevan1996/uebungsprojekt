@@ -73,7 +73,7 @@ function DropDownItem({
   if (withDivider) {
     divider = <hr className="dropdown-divider" />;
   }
-  console.log(platform);
+
   return (
     <>
       {divider}
