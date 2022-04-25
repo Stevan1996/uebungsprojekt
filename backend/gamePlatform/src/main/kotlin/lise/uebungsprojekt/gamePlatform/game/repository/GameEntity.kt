@@ -14,6 +14,8 @@ data class GameEntity(
     val id: Long? = null,
     val title: String = "",
     val releaseDate: LocalDate = LocalDate.now(),
+    val description: String = "",
+    val trailer: String = "",
     @ManyToMany(mappedBy = "developedGames")
     val developer: List<DeveloperEntity> = mutableListOf(),
     @ManyToMany(mappedBy = "games")
@@ -25,6 +27,8 @@ fun GameEntity.toDomain(ratingScore: Double = .0): Game = Game(
     title,
     releaseDate,
     developer.map { it.toDomain() },
+    description,
+    trailer,
     ratingScore,
     platform.map {it.toDomain()}
 )

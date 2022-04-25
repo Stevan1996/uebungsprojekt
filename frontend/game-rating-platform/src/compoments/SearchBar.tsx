@@ -16,7 +16,7 @@ export default function SearchBar() {
     <>
       <div className="field has-addons has-addons-centered">
         <PlatformMenu selectHandler={updatePlatformSelection} />
-        <p className="control is-medium">
+        <p className="control">
           <input
             type="text"
             className="input"
