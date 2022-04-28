@@ -11,6 +11,8 @@ data class Game (
     val title: String,
     val releaseDate: LocalDate,
     val developers: List<Developer>,
+    val description: String,
+    val trailer: String,
     val avgRating: Double,
     val platform: List<Platform>
 )
@@ -19,6 +21,8 @@ fun Game.toEntity(): GameEntity = GameEntity(
     null,
     title,
     releaseDate,
+    description,
+    trailer,
     developers.map {it.toEntity()},
     platform.map {it.toEntity()}
 )
@@ -28,6 +32,8 @@ fun Game.toDTO(): GameDTO = GameDTO(
     title,
     releaseDate,
     developers.map { it.developer },
+    description,
+    trailer,
     avgRating,
     platform.map { it.platform }
 )

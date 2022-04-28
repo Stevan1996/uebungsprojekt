@@ -1,15 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { fetchGameData, Game } from "request/gameData";
+import GameDetails from "./GameDetails";
+import React, { useState, useEffect, SyntheticEvent } from "react";
 
-export interface GameProps {
-  id: number;
-  title: string;
-  releaseDate: string;
-  developers: string[];
-  avgRating: number;
-  platform: string;
-}
-
-export interface GameTableProps {
+interface GameTableProps {
   url?: string;
   platformFilter?: string;
   searchString?: string;
@@ -21,22 +14,46 @@ export function GameTable({
   searchString = "",
 }: GameTableProps) {
   // cache original game data for filter operations
-  const [origGameData, setOrigGameData] = useState<GameProps[]>([]);
-  const [gameData, setGameData] = useState<GameProps[]>([]);
+  const [origGameData, setOrigGameData] = useState<Game[]>([]);
+  const [gameData, setGameData] = useState<Game[]>([]);
+  const [activeModal, setActiveModal] = useState<boolean>(false);
+  const [clickedGame, setClickedGame] = useState<Game>({
+    id: 0,
+    title: "",
+    releaseDate: "",
+    developers: [],
+    description: "",
+    trailer: "",
+    avgRating: 0,
+    platform: "",
+  });
+
+  function openModal(e: SyntheticEvent<HTMLTableRowElement, Event>) {
+    setActiveModal(true);
+    let filteredData = gameData.find(
+      (prop) => prop.id.toString() === e.currentTarget.id
+    );
+
+    if (filteredData !== undefined) {
+      setClickedGame(filteredData);
+    }
+  }
+
+  function closeModal() {
+    setActiveModal(false);
+  }
 
   useEffect(() => {
     const fetchGames = async (requestUrl: string) => {
-      const response = await fetch(requestUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      let data = await response.json();
-      // In case, response contains one single element
-      if (data.constructor.name !== "Array") {
-        data = [data];
+      let data: Game[];
+      try {
+        data = await fetchGameData(requestUrl);
+      } catch (err) {
+        return (
+          <p className="has-text-centered">
+            Spieledaten konnten nicht geladen werden.
+          </p>
+        );
       }
       setOrigGameData(data);
     };
@@ -48,32 +65,24 @@ export function GameTable({
     setGameData(origGameData);
     if (platformFilter !== "Alle") {
       setGameData((games) =>
-        games.filter((prop) => prop.platform.includes(platformFilter))
+        games.filter((game) => game.platform.includes(platformFilter))
       );
     }
     if (searchString !== "") {
       setGameData((games) =>
-        games.filter((prop) =>
-          prop.title.toLowerCase().includes(searchString.toLowerCase())
+        games.filter((game) =>
+          game.title.toLowerCase().includes(searchString.toLowerCase())
         )
       );
     }
   }, [origGameData, platformFilter, searchString]);
 
   // first sort by rating, then sort by date
-  const sortedProps = gameData.sort((obj1, obj2) => {
-    if (
-      obj1.avgRating > obj2.avgRating ||
-      (Number.isNaN(Number(obj2.avgRating)) &&
-        !Number.isNaN(Number(obj1.avgRating)))
-    ) {
+  const sortedGames = gameData.sort((obj1, obj2) => {
+    if (obj1.avgRating > obj2.avgRating) {
       return -1;
     }
-    if (
-      obj1.avgRating < obj2.avgRating ||
-      (Number.isNaN(Number(obj1.avgRating)) &&
-        !Number.isNaN(Number(obj2.avgRating)))
-    ) {
+    if (obj1.avgRating < obj2.avgRating) {
       return 1;
     }
 
@@ -81,48 +90,51 @@ export function GameTable({
   });
 
   return (
-    <table className="table mx-auto">
-      <thead>
-        <tr>
-          <th>Titel</th>
-          <th>Erscheinungsdatum</th>
-          <th>Entwickler</th>
-          <th>Bewertung</th>
-        </tr>
-      </thead>
-      <tbody>
-        {sortedProps.map<JSX.Element>((prop) => (
-          <GameRow
-            id={prop.id}
-            title={prop.title}
-            releaseDate={prop.releaseDate}
-            developers={prop.developers}
-            avgRating={prop.avgRating}
-            platform={prop.platform}
-          />
-        ))}
-      </tbody>
-    </table>
+    <>
+      <table className="table mx-auto">
+        <thead>
+          <tr>
+            <th>Titel</th>
+            <th>Erscheinungsdatum</th>
+            <th>Entwickler</th>
+            <th>Bewertung</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sortedGames.map<JSX.Element>((game) => (
+            <GameRow game={game} onClickHandler={openModal} />
+          ))}
+        </tbody>
+      </table>
+      <GameDetails
+        gameData={clickedGame}
+        active={activeModal}
+        closeHandler={closeModal}
+      />
+    </>
   );
 }
 
-function GameRow({
-  id,
-  avgRating,
-  developers,
-  releaseDate,
-  title,
-}: GameProps): JSX.Element {
-  const ratingScore = Number.isNaN(Number(avgRating)) ? 0 : avgRating;
+interface GameRowProps {
+  game: Game;
+  onClickHandler: (e: SyntheticEvent<HTMLTableRowElement, Event>) => void;
+}
+
+function GameRow({ game, onClickHandler }: GameRowProps): JSX.Element {
   const developerStr =
-    developers !== undefined ? developers.join(", ") : undefined;
+    game.developers !== undefined ? game.developers.join(", ") : undefined;
 
   return (
-    <tr>
-      <td>{title}</td>
-      <td>{releaseDate}</td>
+    <tr
+      onClick={onClickHandler}
+      id={game.id.toString()}
+      aria-haspopup="true"
+      data-target="game-description-modal"
+    >
+      <td>{game.title}</td>
+      <td>{game.releaseDate}</td>
       <td>{developerStr}</td>
-      <td>{ratingScore}</td>
+      <td>{game.avgRating}</td>
     </tr>
   );
 }

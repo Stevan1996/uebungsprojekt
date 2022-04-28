@@ -10,6 +10,8 @@ data class GameDTO(
     val title: String,
     val releaseDate: LocalDate,
     val developers: List<String>,
+    val description: String,
+    val trailer: String,
     val avgRating: Double,
     val platform: List<String>
 )
@@ -19,6 +21,8 @@ fun GameDTO.toDomain(): Game = Game(
     title,
     releaseDate,
     developers.map { Developer(null, it) },
+    description,
+    trailer,
     avgRating,
     platform.map { Platform(null, it) }
 )

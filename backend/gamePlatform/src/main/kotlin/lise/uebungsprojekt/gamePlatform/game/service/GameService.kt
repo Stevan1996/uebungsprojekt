@@ -16,8 +16,10 @@ interface GameService {
 class GameServiceImpl(private val gameRepo: GameRepository,
                            private val ratingRepo: RatingRepository
 ) : GameService {
-    private fun calcRatingAverage(id: Long) : Double =
-        ratingRepo.findAll().filter {it.game.id == id}.map { it.rating.numStar }.average()
+    private fun calcRatingAverage(id: Long) : Double {
+        var rating = ratingRepo.findAll().filter { it.game.id == id }.map { it.rating.numStar }.average()
+        return if (rating.isNaN()) .0 else rating
+    }
 
     override fun findById(id: Long) : Game {
         if (gameRepo.existsById(id)) {

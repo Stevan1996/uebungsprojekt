@@ -1,4 +1,5 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
+import { fetchGameData } from "request/gameData";
 
 interface PlatformMenuProps {
   url?: string;
@@ -13,15 +14,13 @@ export default function PlatformMenu({
 
   useEffect(() => {
     const fetchPlatforms = async (requestUrl: string) => {
-      const response = await fetch(requestUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      let platformData = await response.json();
-      setPlatforms(platformData);
+      let data: any;
+      try {
+        data = await fetchGameData(requestUrl);
+      } catch (err) {
+        return <p>Spieleplattformen konnten nicht geladen werden.</p>;
+      }
+      setPlatforms(data);
     };
 
     fetchPlatforms(url).catch(console.error);

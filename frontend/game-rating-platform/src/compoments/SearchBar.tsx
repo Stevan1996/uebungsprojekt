@@ -1,6 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import GameTable from "./GameTable";
-import PlatformMenu from "./PlatformSelector";
+import PlatformMenu from "./PlatformMenu";
 
 export default function SearchBar() {
   const [selectedPlatform, setSelectedPlatform] = useState<string>("Alle");
@@ -16,7 +16,7 @@ export default function SearchBar() {
     <>
       <div className="field has-addons has-addons-centered">
         <PlatformMenu selectHandler={updatePlatformSelection} />
-        <p className="control is-medium">
+        <p className="control">
           <input
             type="text"
             className="input"
