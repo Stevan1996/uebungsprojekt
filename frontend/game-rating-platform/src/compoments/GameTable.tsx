@@ -1,5 +1,5 @@
-import { fetchGameData, GameProps } from "request/gameData";
-import GameDetails from "./DescriptionPopUp";
+import { fetchGameData, Game } from "request/gameData";
+import GameDetails from "./GameDetails";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 
 interface GameTableProps {
@@ -14,10 +14,10 @@ export function GameTable({
   searchString = "",
 }: GameTableProps) {
   // cache original game data for filter operations
-  const [origGameData, setOrigGameData] = useState<GameProps[]>([]);
-  const [gameData, setGameData] = useState<GameProps[]>([]);
+  const [origGameData, setOrigGameData] = useState<Game[]>([]);
+  const [gameData, setGameData] = useState<Game[]>([]);
   const [activeModal, setActiveModal] = useState<boolean>(false);
-  const [clickedGame, setClickedGame] = useState<GameProps>({
+  const [clickedGame, setClickedGame] = useState<Game>({
     id: 0,
     title: "",
     releaseDate: "",
@@ -30,12 +30,12 @@ export function GameTable({
 
   function openModal(e: SyntheticEvent<HTMLTableRowElement, Event>) {
     setActiveModal(true);
-    let filteredData = gameData.filter(
-      (prop) => prop.title === e.currentTarget.id
+    let filteredData = gameData.find(
+      (prop) => prop.id.toString() === e.currentTarget.id
     );
-    console.log(filteredData);
-    if (filteredData.length !== 0) {
-      setClickedGame(filteredData[0]);
+
+    if (filteredData !== undefined) {
+      setClickedGame(filteredData);
     }
   }
 
@@ -45,13 +45,16 @@ export function GameTable({
 
   useEffect(() => {
     const fetchGames = async (requestUrl: string) => {
-      let data: GameProps[] = await fetchGameData(requestUrl);
-      data = data.map((props) => {
-        props.avgRating = Number.isNaN(Number(props.avgRating))
-          ? 0
-          : props.avgRating;
-        return props;
-      });
+      let data: Game[];
+      try {
+        data = await fetchGameData(requestUrl);
+      } catch (err) {
+        return (
+          <p className="has-text-centered">
+            Spieledaten konnten nicht geladen werden.
+          </p>
+        );
+      }
       setOrigGameData(data);
     };
 
@@ -62,32 +65,24 @@ export function GameTable({
     setGameData(origGameData);
     if (platformFilter !== "Alle") {
       setGameData((games) =>
-        games.filter((prop) => prop.platform.includes(platformFilter))
+        games.filter((game) => game.platform.includes(platformFilter))
       );
     }
     if (searchString !== "") {
       setGameData((games) =>
-        games.filter((prop) =>
-          prop.title.toLowerCase().includes(searchString.toLowerCase())
+        games.filter((game) =>
+          game.title.toLowerCase().includes(searchString.toLowerCase())
         )
       );
     }
   }, [origGameData, platformFilter, searchString]);
 
   // first sort by rating, then sort by date
-  const sortedProps = gameData.sort((obj1, obj2) => {
-    if (
-      obj1.avgRating > obj2.avgRating ||
-      (Number.isNaN(Number(obj2.avgRating)) &&
-        !Number.isNaN(Number(obj1.avgRating)))
-    ) {
+  const sortedGames = gameData.sort((obj1, obj2) => {
+    if (obj1.avgRating > obj2.avgRating) {
       return -1;
     }
-    if (
-      obj1.avgRating < obj2.avgRating ||
-      (Number.isNaN(Number(obj1.avgRating)) &&
-        !Number.isNaN(Number(obj2.avgRating)))
-    ) {
+    if (obj1.avgRating < obj2.avgRating) {
       return 1;
     }
 
@@ -106,14 +101,8 @@ export function GameTable({
           </tr>
         </thead>
         <tbody>
-          {sortedProps.map<JSX.Element>((prop) => (
-            <GameRow
-              title={prop.title}
-              releaseDate={prop.releaseDate}
-              developers={prop.developers}
-              avgRating={prop.avgRating}
-              onClickHandler={openModal}
-            />
+          {sortedGames.map<JSX.Element>((game) => (
+            <GameRow game={game} onClickHandler={openModal} />
           ))}
         </tbody>
       </table>
@@ -127,34 +116,25 @@ export function GameTable({
 }
 
 interface GameRowProps {
-  avgRating: number;
-  developers: string[];
-  releaseDate: string;
-  title: string;
+  game: Game;
   onClickHandler: (e: SyntheticEvent<HTMLTableRowElement, Event>) => void;
 }
 
-function GameRow({
-  avgRating,
-  developers,
-  releaseDate,
-  title,
-  onClickHandler,
-}: GameRowProps): JSX.Element {
+function GameRow({ game, onClickHandler }: GameRowProps): JSX.Element {
   const developerStr =
-    developers !== undefined ? developers.join(", ") : undefined;
+    game.developers !== undefined ? game.developers.join(", ") : undefined;
 
   return (
     <tr
       onClick={onClickHandler}
-      id={title}
+      id={game.id.toString()}
       aria-haspopup="true"
       data-target="game-description-modal"
     >
-      <td>{title}</td>
-      <td>{releaseDate}</td>
+      <td>{game.title}</td>
+      <td>{game.releaseDate}</td>
       <td>{developerStr}</td>
-      <td>{avgRating}</td>
+      <td>{game.avgRating}</td>
     </tr>
   );
 }

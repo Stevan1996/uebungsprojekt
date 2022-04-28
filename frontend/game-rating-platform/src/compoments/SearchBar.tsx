@@ -1,6 +1,6 @@
 import React, { useState, SyntheticEvent } from "react";
 import GameTable from "./GameTable";
-import PlatformMenu from "./PlatformSelector";
+import PlatformMenu from "./PlatformMenu";
 
 export default function SearchBar() {
   const [selectedPlatform, setSelectedPlatform] = useState<string>("Alle");
