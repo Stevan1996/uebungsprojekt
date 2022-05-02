@@ -2,9 +2,11 @@ package lise.uebungsprojekt.gamePlatform.game.service
 
 import lise.uebungsprojekt.gamePlatform.game.repository.DeveloperEntity
 
-data class Developer (val id: Int?, val developer: String)
+data class Developer (val id: Int? = null, val developer: String)
 
 fun Developer.toEntity(): DeveloperEntity = DeveloperEntity(
-    null,
+    id,
     developer
 )
+
+fun Developer.toDTO(): String = developer

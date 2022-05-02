@@ -6,7 +6,7 @@ import lise.uebungsprojekt.gamePlatform.game.service.platform.Platform
 import java.time.LocalDate
 
 data class GameDTO(
-    val id: Long?,
+    val id: Long? = null,
     val title: String,
     val releaseDate: LocalDate,
     val developers: List<String>,
@@ -17,7 +17,7 @@ data class GameDTO(
 )
 
 fun GameDTO.toDomain(): Game = Game(
-    null,
+    id,
     title,
     releaseDate,
     developers.map { Developer(null, it) },
