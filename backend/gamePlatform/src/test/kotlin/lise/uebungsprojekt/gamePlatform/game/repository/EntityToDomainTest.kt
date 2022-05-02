@@ -72,14 +72,6 @@ internal class EntityToDomainTest {
 
             platformEntity.toDomain() shouldBe platformDomain
         }
-
-        @Test
-        fun `equality on entities with different ids but same platform`() {
-            val platformEntityA = PlatformEntity(4, "PS5")
-            val platformEntityB = PlatformEntity(2, "PS5")
-
-            platformEntityA shouldBe platformEntityB
-        }
     }
 
     @Nested
@@ -114,14 +106,6 @@ internal class EntityToDomainTest {
             val developerDomain = Developer(42, "Intelligent Systems")
 
             developerEntity.toDomain() shouldNotBe developerDomain
-        }
-
-        @Test
-        fun `equality on entities with different ids but same platform`() {
-            val developerEntityA = DeveloperEntity(4, "Game Freak")
-            val developerEntityB = DeveloperEntity(2, "Game Freak")
-
-            developerEntityA shouldBe developerEntityB
         }
     }
 }

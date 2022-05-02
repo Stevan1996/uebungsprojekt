@@ -1,7 +1,7 @@
 package lise.uebungsprojekt.gamePlatform.game.service
 
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldNotBe
 import io.mockk.clearAllMocks
 import io.mockk.every
