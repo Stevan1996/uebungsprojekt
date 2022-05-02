@@ -3,6 +3,7 @@ package lise.uebungsprojekt.gamePlatform.game.service
 import lise.uebungsprojekt.gamePlatform.game.controller.GameDTO
 import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
 import lise.uebungsprojekt.gamePlatform.game.service.platform.Platform
+import lise.uebungsprojekt.gamePlatform.game.service.platform.toDTO
 import lise.uebungsprojekt.gamePlatform.game.service.platform.toEntity
 import java.time.LocalDate
 
@@ -18,7 +19,7 @@ data class Game (
 )
 
 fun Game.toEntity(): GameEntity = GameEntity(
-    null,
+    id,
     title,
     releaseDate,
     description,
@@ -31,9 +32,9 @@ fun Game.toDTO(): GameDTO = GameDTO(
     id,
     title,
     releaseDate,
-    developers.map { it.developer },
+    developers.map { it.toDTO() },
     description,
     trailer,
     avgRating,
-    platform.map { it.platform }
+    platform.map { it.toDTO() }
 )
