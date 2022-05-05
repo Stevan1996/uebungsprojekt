@@ -1,4 +1,4 @@
-import { fetchGameData, Game } from "request/gameData";
+import { fetchGameData, Game } from "request/fetchData";
 import GameDetails from "./GameDetails";
 import React, { useState, useEffect, SyntheticEvent } from "react";
 
@@ -29,13 +29,13 @@ export function GameTable({
   });
 
   function openModal(e: SyntheticEvent<HTMLTableRowElement, Event>) {
-    setActiveModal(true);
     let filteredData = gameData.find(
       (prop) => prop.id.toString() === e.currentTarget.id
     );
 
     if (filteredData !== undefined) {
       setClickedGame(filteredData);
+      setActiveModal(true);
     }
   }
 

@@ -28,4 +28,7 @@ class LoginController(private val userService: UserService) {
     @PostMapping("/user")
     fun registerUser(@RequestBody user: UserDTO): UserDTO =
         userService.saveUser(user.toDomain().toEntity()).toDomain().toDTO()
+
+    @GetMapping("/user/{email}")
+    fun checkEmailExistence(@PathVariable email: String): Boolean = userService.emailExists(email)
 }

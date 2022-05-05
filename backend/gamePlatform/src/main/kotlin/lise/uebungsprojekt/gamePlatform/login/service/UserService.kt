@@ -11,6 +11,7 @@ interface UserService {
     fun getPasswordByEmail(email: String) : String
     fun saveUser(user: UserEntity) : UserEntity
     fun changePassword(user: User, newPassword: String): UserEntity
+    fun emailExists(email: String): Boolean
 }
 
 @Service
@@ -58,4 +59,6 @@ class UserServiceImpl (private val userRepo: UserRepository) : UserService {
 
         return userRepo.save(UserEntity(userData.id, userData.email, BCrypt.hashpw(newPassword, BCrypt.gensalt())))
     }
+
+    override fun emailExists(email: String): Boolean = userRepo.findAll().any {it.email == email}
 }
