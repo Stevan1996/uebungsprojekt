@@ -24,22 +24,22 @@ internal class DomainConversionTest {
                 2,
                 "Game Title",
                 LocalDate.of(2000, 1, 1),
-                listOf<Developer>(),
+                mutableSetOf<Developer>(),
                 "Game Description",
                 "https://youtube.com",
                 .0,
-                listOf<Platform>()
+                mutableSetOf<Platform>()
             )
 
             val gameDTO = GameDTO(
                 2,
                 "Game Title",
                 LocalDate.of(2000, 1, 1),
-                listOf<String>(),
+                mutableSetOf<String>(),
                 "Game Description",
                 "https://youtube.com",
                 .0,
-                listOf<String>()
+                mutableSetOf<String>()
             )
 
             gameDomain.toDTO() shouldBe gameDTO
@@ -51,11 +51,11 @@ internal class DomainConversionTest {
                 2,
                 "Game Title",
                 LocalDate.of(2000, 1, 1),
-                listOf<Developer>(),
+                mutableSetOf<Developer>(),
                 "Game Description",
                 "https://youtube.com",
                 .0,
-                listOf<Platform>()
+                mutableSetOf<Platform>()
             )
 
             val gameEntity = GameEntity(
@@ -64,8 +64,8 @@ internal class DomainConversionTest {
                 LocalDate.of(2000, 1, 1),
                 "Game Description",
                 "https://youtube.com",
-                listOf<DeveloperEntity>(),
-                listOf<PlatformEntity>()
+                mutableSetOf<DeveloperEntity>(),
+                mutableSetOf<PlatformEntity>()
             )
 
             gameDomain.toEntity() shouldBe gameEntity

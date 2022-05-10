@@ -1,10 +1,7 @@
 package lise.uebungsprojekt.gamePlatform.game.controller
 
-import lise.uebungsprojekt.gamePlatform.game.repository.toDomain
 import lise.uebungsprojekt.gamePlatform.game.service.GameService
 import lise.uebungsprojekt.gamePlatform.game.service.toDTO
-import lise.uebungsprojekt.gamePlatform.game.service.toEntity
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -25,7 +22,6 @@ class GameController(private val gameService: GameService) {
         gameService.findAll().map {it.toDTO()}
 
     @PostMapping("/game")
-    fun saveGame(@RequestBody game: GameDTO): GameDTO {
-        return gameService.save(game.toDomain().toEntity()).toDomain().toDTO()
-    }
+    fun saveGame(@RequestBody game: GameDTO): GameDTO =
+        gameService.save(game.toDomain()).toDTO()
 }

@@ -28,11 +28,11 @@ internal class EntityToDomainTest {
                 42,
                 "Game Title",
                 LocalDate.of(2000, 1, 1),
-                mutableListOf<Developer>(),
+                mutableSetOf<Developer>(),
                 "Game Description",
                 "https://youtube.com",
                 .0,
-                mutableListOf<Platform>()
+                mutableSetOf<Platform>()
             )
 
             gameEntity.toDomain() shouldBe gameDomain
@@ -51,7 +51,7 @@ internal class EntityToDomainTest {
 
         @Test
         fun `entity conversion should not produce different id`() {
-            val platformEntity = PlatformEntity(null, "Níntendo Switch")
+            val platformEntity = PlatformEntity(null, "Nintendo Switch")
             val platformDomain = Platform(0, "Nintendo Switch")
 
             platformEntity.toDomain() shouldNotBe platformDomain
@@ -67,10 +67,18 @@ internal class EntityToDomainTest {
 
         @Test
         fun `game list should not affect entity conversion`() {
-            val platformEntity = PlatformEntity(0, "PS4", listOf(GameEntity()))
+            val platformEntity = PlatformEntity(0, "PS4", mutableSetOf(GameEntity()))
             val platformDomain = Platform(0, "PS4")
 
             platformEntity.toDomain() shouldBe platformDomain
+        }
+
+        @Test
+        fun `equality on entities with different ids but same platform`() {
+            val platformEntityA = PlatformEntity(4, "PS5")
+            val platformEntityB = PlatformEntity(2, "PS5")
+
+            platformEntityA shouldBe platformEntityB
         }
     }
 
@@ -86,7 +94,7 @@ internal class EntityToDomainTest {
 
         @Test
         fun `game list should not affect entity conversion`() {
-            val developerEntity = DeveloperEntity(42, "Game Freak", listOf(GameEntity()))
+            val developerEntity = DeveloperEntity(42, "Game Freak", mutableSetOf(GameEntity()))
             val developerDomain = Developer(42, "Game Freak")
 
             developerEntity.toDomain() shouldBe developerDomain
@@ -94,7 +102,7 @@ internal class EntityToDomainTest {
 
         @Test
         fun `entity conversion should not produce different id`() {
-            val developerEntity = DeveloperEntity(null, "GameFreak")
+            val developerEntity = DeveloperEntity(null, "Game Freak")
             val developerDomain = Developer(0, "Game Freak")
 
             developerEntity.toDomain() shouldNotBe developerDomain
@@ -106,6 +114,14 @@ internal class EntityToDomainTest {
             val developerDomain = Developer(42, "Intelligent Systems")
 
             developerEntity.toDomain() shouldNotBe developerDomain
+        }
+
+        @Test
+        fun `equality on entities with different ids but same platform`() {
+            val developerEntityA = DeveloperEntity(4, "Game Freak")
+            val developerEntityB = DeveloperEntity(2, "Game Freak")
+
+            developerEntityA shouldBe developerEntityB
         }
     }
 }

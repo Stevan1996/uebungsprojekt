@@ -1,13 +1,14 @@
 package lise.uebungsprojekt.gamePlatform.game.service
 
-import io.kotest.matchers.shouldBe
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import lise.uebungsprojekt.gamePlatform.game.repository.DeveloperEntity
+import lise.uebungsprojekt.gamePlatform.game.repository.DeveloperRepository
 import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
 import lise.uebungsprojekt.gamePlatform.game.repository.GameRepository
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.PlatformEntity
@@ -28,8 +29,9 @@ import java.util.*
 internal class ServiceTest {
     private val gameRepo = mockk<GameRepository>()
     private val ratingRepo = mockk<RatingRepository>()
+    private val developerRepo = mockk<DeveloperRepository>()
     private val platformRepo = mockk<PlatformRepository>()
-    private val gameService = GameServiceImpl(gameRepo, ratingRepo)
+    private val gameService = GameServiceImpl(gameRepo, ratingRepo, developerRepo, platformRepo)
     private val platformService = PlatformServiceImpl(platformRepo)
 
     @BeforeEach
@@ -48,8 +50,8 @@ internal class ServiceTest {
                     LocalDate.of(2042, 4, 2),
                     "RPG",
                     "https://youtube.com",
-                    listOf(DeveloperEntity(4, "Nintendo")),
-                    listOf(PlatformEntity(2, "Switch"))
+                    mutableSetOf(DeveloperEntity(4, "Nintendo")),
+                    mutableSetOf(PlatformEntity(2, "Switch"))
                 )
             )
 
@@ -58,11 +60,11 @@ internal class ServiceTest {
                     42,
                     "Fire Emblem",
                     LocalDate.of(2042, 4, 2),
-                    listOf(Developer(4, "Nintendo")),
+                    mutableSetOf(Developer(4, "Nintendo")),
                     "RPG",
                     "https://youtube.com",
                     .0,
-                    listOf(Platform(2, "Switch"))
+                    mutableSetOf(Platform(2, "Switch"))
                 )
             )
 
@@ -81,8 +83,8 @@ internal class ServiceTest {
                 LocalDate.of(2042, 4, 2),
                 "RPG",
                 "https://youtube.com",
-                listOf(DeveloperEntity(2, "Game Studio")),
-                listOf(PlatformEntity(4, "Nintendo Switch"))
+                mutableSetOf(DeveloperEntity(2, "Game Studio")),
+                mutableSetOf(PlatformEntity(4, "Nintendo Switch"))
             )
             val sampleGameEntityPoke = GameEntity(
                 1,
@@ -90,11 +92,11 @@ internal class ServiceTest {
                 LocalDate.of(1996, 9, 6),
                 "Another RPG",
                 "pokemon-trailer",
-                listOf(
+                mutableSetOf(
                     DeveloperEntity(1, "Nintendo"),
                     DeveloperEntity(3, "Game Freak")
                 ),
-                listOf(PlatformEntity(4, "Nintendo Switch"))
+                mutableSetOf(PlatformEntity(4, "Nintendo Switch"))
             )
 
             every { gameRepo.findAll() } returns listOf(
@@ -127,24 +129,24 @@ internal class ServiceTest {
                     42,
                     "Fire Emblem",
                     LocalDate.of(2042, 4, 2),
-                    listOf(Developer(2, "Game Studio")),
+                    mutableSetOf(Developer(2, "Game Studio")),
                     "RPG",
                     "https://youtube.com",
                     3.5,
-                    listOf(Platform(4, "Nintendo Switch"))
+                    mutableSetOf(Platform(4, "Nintendo Switch"))
                 ),
                 Game(
                     1,
                     "Pokemon",
                     LocalDate.of(1996, 9, 6),
-                    listOf(
+                    mutableSetOf(
                         Developer(1, "Nintendo"),
                         Developer(3, "Game Freak")
                     ),
                     "Another RPG",
                     "pokemon-trailer",
                     2.0,
-                    listOf(Platform(4, "Nintendo Switch"))
+                    mutableSetOf(Platform(4, "Nintendo Switch"))
                 )
             )
 
@@ -170,8 +172,8 @@ internal class ServiceTest {
                 LocalDate.of(2042, 4, 2),
                 "RPG",
                 "https://youtube.com",
-                listOf(DeveloperEntity(4, "Nintendo")),
-                listOf(PlatformEntity(2, "Nintendo Switch"))
+                mutableSetOf(DeveloperEntity(4, "Nintendo")),
+                mutableSetOf(PlatformEntity(2, "Nintendo Switch"))
             )
 
             val slot = slot<Long>()
@@ -204,11 +206,11 @@ internal class ServiceTest {
                 42,
                 "Fire Emblem",
                 LocalDate.of(2042, 4, 2),
-                listOf(Developer(4, "Nintendo")),
+                mutableSetOf(Developer(4, "Nintendo")),
                 "RPG",
                 "https://youtube.com",
                 3.0,
-                listOf(Platform(2, "Nintendo Switch"))
+                mutableSetOf(Platform(2, "Nintendo Switch"))
             )
 
             gameService.findById(42) shouldBe game
@@ -232,7 +234,7 @@ internal class ServiceTest {
             every { ratingRepo.findAll() } returns listOf()
 
             shouldThrow<IllegalArgumentException> {
-                 gameService.findById(2)
+                gameService.findById(2)
             }
         }
     }

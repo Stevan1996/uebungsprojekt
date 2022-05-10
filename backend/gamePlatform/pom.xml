@@ -40,29 +40,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.6.6</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jetbrains.exposed</groupId>
-			<artifactId>exposed-core</artifactId>
-			<version>0.37.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains.exposed</groupId>
-			<artifactId>exposed-dao</artifactId>
-			<version>0.37.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains.exposed</groupId>
-			<artifactId>exposed-jdbc</artifactId>
-			<version>0.37.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jetbrains.exposed</groupId>
-			<artifactId>exposed-java-time</artifactId>
-			<version>0.37.3</version>
+			<version>2.6.7</version>
 		</dependency>
 
 		<dependency>
@@ -74,30 +52,24 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>2.6.3</version>
+			<version>2.6.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-relational</artifactId>
-			<version>2.3.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jetbrains.exposed</groupId>
-			<artifactId>spring-transaction</artifactId>
-			<version>0.37.3</version>
+			<version>2.3.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
-			<version>2.6.6</version>
+			<version>2.6.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>2.6.6</version>
+			<version>2.6.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains.kotlin</groupId>
@@ -119,7 +91,7 @@
 		<dependency>
 			<groupId>io.kotest</groupId>
 			<artifactId>kotest-runner-junit5-jvm</artifactId>
-			<version>5.2.3</version>
+			<version>5.3.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -129,9 +101,37 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>4.5.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>io.mockk</groupId>
 			<artifactId>mockk</artifactId>
 			<version>1.12.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>1.17.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mariadb</artifactId>
+			<version>1.17.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
+			<version>1.12.9</version>
+		</dependency>
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy-agent</artifactId>
+			<version>1.12.9</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
