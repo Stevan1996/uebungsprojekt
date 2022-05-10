@@ -1,6 +1,7 @@
 package lise.uebungsprojekt.gamePlatform.game.repository
 
 import lise.uebungsprojekt.gamePlatform.game.service.Developer
+import org.hibernate.annotations.NaturalId
 import javax.persistence.*
 
 @Entity
@@ -9,14 +10,18 @@ data class DeveloperEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int? = null,
-    val developer: String = "",
-    @ManyToMany
-    @JoinTable(
-        name = "game_developer",
-        joinColumns = [JoinColumn(name = "developer_id")],
-        inverseJoinColumns = [JoinColumn(name = "game_id")]
-    )
-    val developedGames: List<GameEntity> = mutableListOf()
-)
+    @NaturalId
+    val developer: String = ""
+) {
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "developer")
+    var developedGames: MutableSet<GameEntity> = mutableSetOf()
+
+    constructor(id: Int? = null,
+                developer: String = "",
+                developedGames: MutableSet<GameEntity> = mutableSetOf()):
+            this(id, developer) {
+                this.developedGames = developedGames
+            }
+}
 
 fun DeveloperEntity.toDomain(): Developer = Developer(id, developer)
