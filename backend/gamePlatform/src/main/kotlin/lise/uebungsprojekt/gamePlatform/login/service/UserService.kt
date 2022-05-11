@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 interface UserService {
     fun findById(id: Long) : User
     fun getPasswordByEmail(email: String) : String
-    fun saveUser(user: UserEntity) : UserEntity
-    fun changePassword(user: User, newPassword: String): UserEntity
+    fun saveUser(user: User) : User
+    fun changePassword(user: User, newPassword: String): User
     fun emailExists(email: String): Boolean
 }
 
@@ -38,14 +38,20 @@ class UserServiceImpl (private val userRepo: UserRepository) : UserService {
         return result[0]
     }
 
-    override fun saveUser(user: UserEntity): UserEntity {
+    override fun saveUser(user: User): User {
+        val emailRegex = Regex("/[a-z0-9]+@[a-z0-9]+.[a-z]{2,3}/", RegexOption.IGNORE_CASE)
+        if (!emailRegex.matches(user.email)) {
+            throw IllegalArgumentException("${user.email} is not a valid email")
+        }
+
         if (userRepo.findAll().any { it.email == user.email }) {
             throw IllegalArgumentException("A user with the email: ${user.email} already exists")
         }
-        return userRepo.save(user)
+
+        return userRepo.save(user.toEntity()).toDomain()
     }
 
-    override fun changePassword(user: User, newPassword: String): UserEntity {
+    override fun changePassword(user: User, newPassword: String): User {
         if (userRepo.findAll().none { it.email == user.email }) {
             throw IllegalArgumentException("A user with the email: ${user.email} does not exists")
         }
@@ -58,7 +64,15 @@ class UserServiceImpl (private val userRepo: UserRepository) : UserService {
         userRepo.delete(userData)
 
         return userRepo.save(UserEntity(userData.id, userData.email, BCrypt.hashpw(newPassword, BCrypt.gensalt())))
+            .toDomain()
     }
 
-    override fun emailExists(email: String): Boolean = userRepo.findAll().any {it.email == email}
+    override fun emailExists(email: String): Boolean {
+        val allUsers = userRepo.findAll()
+        if (allUsers.isEmpty()) {
+            return false
+        }
+
+        return allUsers.any {it.email == email}
+    }
 }
