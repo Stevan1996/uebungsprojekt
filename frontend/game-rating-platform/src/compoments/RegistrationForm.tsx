@@ -40,14 +40,17 @@ const enum HelpStatus {
   invalid = "is-danger",
   neutral = "",
 }
+
 type HelpMsg = {
   msg: String;
   status: HelpStatus;
 };
+
 interface EmailInputProps {
   validate?: boolean;
   emailCallback: (mail: string) => void;
 }
+
 export function EmailInput({
   validate = false,
   emailCallback = () => {},
@@ -57,7 +60,14 @@ export function EmailInput({
     status: HelpStatus.neutral,
   });
   let iconType: string = "";
+
   async function validateMail(e: SyntheticEvent<HTMLInputElement, Event>) {
+    if (e.currentTarget.value === "") {
+      setHelpMsg({ msg: "", status: HelpStatus.neutral });
+      emailCallback(e.currentTarget.value);
+      return;
+    }
+
     const emailRE = new RegExp("/[a-z0-9]+@[a-z0-9]+.[a-z]{2,3}/");
     if (emailRE.test(e.currentTarget.value.toLowerCase())) {
       setHelpMsg({ msg: "Ungültige Emailadresse", status: HelpStatus.invalid });
@@ -77,10 +87,19 @@ export function EmailInput({
       emailCallback(e.currentTarget.value);
     }
 
-    if (helpMsg.status === HelpStatus.invalid) {
-      iconType = "fas fa-exclamation-triangle";
-    } else if (helpMsg.status === HelpStatus.valid) {
-      iconType = "fas fa-check";
+    switch (helpMsg.status) {
+      case HelpStatus.invalid: {
+        iconType = "fas fa-exclamation-triangle";
+        break;
+      }
+      case HelpStatus.valid: {
+        iconType = "fas fa-check";
+        break;
+      }
+      default: {
+        iconType = "";
+        break;
+      }
     }
   }
 

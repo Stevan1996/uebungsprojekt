@@ -1,5 +1,5 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
-import { fetchGameData } from "request/gameData";
+import { fetchGameData } from "request/fetchData";
 
 interface PlatformMenuProps {
   url?: string;

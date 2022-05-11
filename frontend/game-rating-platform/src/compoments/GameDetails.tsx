@@ -1,5 +1,5 @@
 import React from "react";
-import { Game } from "request/gameData";
+import { Game } from "request/fetchData";
 
 interface GameDetailsProps {
   gameData: Game;
