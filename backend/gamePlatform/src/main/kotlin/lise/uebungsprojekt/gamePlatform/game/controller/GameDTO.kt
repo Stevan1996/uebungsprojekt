@@ -6,23 +6,23 @@ import lise.uebungsprojekt.gamePlatform.game.service.platform.Platform
 import java.time.LocalDate
 
 data class GameDTO(
-    val id: Long?,
+    val id: Long? = null,
     val title: String,
     val releaseDate: LocalDate,
-    val developers: List<String>,
+    val developers: Set<String>,
     val description: String,
     val trailer: String,
     val avgRating: Double,
-    val platform: List<String>
+    val platform: Set<String>
 )
 
 fun GameDTO.toDomain(): Game = Game(
-    null,
+    id,
     title,
     releaseDate,
-    developers.map { Developer(null, it) },
+    developers.map { Developer(null, it) }.toMutableSet(),
     description,
     trailer,
     avgRating,
-    platform.map { Platform(null, it) }
+    platform.map { Platform(null, it) }.toMutableSet()
 )
