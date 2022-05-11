@@ -4,8 +4,8 @@ import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import lise.uebungsprojekt.gamePlatform.game.controller.GameDTO
-import lise.uebungsprojekt.gamePlatform.game.repository.DeveloperEntity
 import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
+import lise.uebungsprojekt.gamePlatform.game.repository.developer.DeveloperEntity
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.PlatformEntity
 import lise.uebungsprojekt.gamePlatform.game.service.platform.Platform
 import lise.uebungsprojekt.gamePlatform.game.service.platform.toDTO

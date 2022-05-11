@@ -1,9 +1,7 @@
 package lise.uebungsprojekt.gamePlatform.game.service
 
 import lise.uebungsprojekt.gamePlatform.game.controller.GameDTO
-import lise.uebungsprojekt.gamePlatform.game.repository.DeveloperEntity
 import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
-import lise.uebungsprojekt.gamePlatform.game.repository.platform.PlatformEntity
 import lise.uebungsprojekt.gamePlatform.game.service.platform.Platform
 import lise.uebungsprojekt.gamePlatform.game.service.platform.toDTO
 import lise.uebungsprojekt.gamePlatform.game.service.platform.toEntity

@@ -7,10 +7,10 @@ import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
-import lise.uebungsprojekt.gamePlatform.game.repository.DeveloperEntity
-import lise.uebungsprojekt.gamePlatform.game.repository.DeveloperRepository
 import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
 import lise.uebungsprojekt.gamePlatform.game.repository.GameRepository
+import lise.uebungsprojekt.gamePlatform.game.repository.developer.DeveloperEntity
+import lise.uebungsprojekt.gamePlatform.game.repository.developer.DeveloperRepository
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.PlatformEntity
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.PlatformRepository
 import lise.uebungsprojekt.gamePlatform.game.repository.rating.GameRating

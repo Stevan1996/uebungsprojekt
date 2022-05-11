@@ -1,6 +1,7 @@
 package lise.uebungsprojekt.gamePlatform.game.service
 
 import lise.uebungsprojekt.gamePlatform.game.repository.*
+import lise.uebungsprojekt.gamePlatform.game.repository.developer.DeveloperRepository
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.*
 import lise.uebungsprojekt.gamePlatform.game.repository.rating.RatingRepository
 import lise.uebungsprojekt.gamePlatform.game.service.platform.toEntity
@@ -37,19 +38,19 @@ class GameServiceImpl(
     override fun save(game: Game): Game {
         // save new developers and platforms beforehand to get ids
         // prevents saving multiple records of the same developers and platforms
-        game.developers.filter { !developerRepo.existsByName(it.developer) }
+        game.developers.filter { !developerRepo.existsByDeveloper(it.developer) }
             .map { developerRepo.save(it.toEntity() ) }
 
-        game.platform.filter { !platformRepo.existsByName(it.platform) }
+        game.platform.filter { !platformRepo.existsByPlatform(it.platform) }
             .map { platformRepo.save(it.toEntity()) }
 
-        val gameDeveloperEntities = game.developers.map { developerRepo.getDeveloperByName(it.developer) }
+        val gameDeveloperEntities = game.developers.map { developerRepo.findByDeveloper(it.developer) }
             .toMutableSet()
-        val gamePlatformEntities = game.platform.map { platformRepo.getPlatformByName(it.platform) }
+        val gamePlatformEntities = game.platform.map { platformRepo.findByPlatform(it.platform) }
             .toMutableSet()
 
-        val gameEntity: GameEntity = if (gameRepo.existsByName(game.title)) {
-            gameRepo.findAll().findLast { it.title == game.title }!!
+        val gameEntity: GameEntity = if (gameRepo.existsByTitle(game.title)) {
+            gameRepo.findByTitle(game.title)
         } else {
             game.toEntity()
         }

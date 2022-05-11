@@ -1,6 +1,7 @@
 package lise.uebungsprojekt.gamePlatform.game.service
 
-import lise.uebungsprojekt.gamePlatform.game.repository.DeveloperEntity
+import lise.uebungsprojekt.gamePlatform.game.repository.developer.DeveloperEntity
+
 
 data class Developer (val id: Int? = null, val developer: String)
 

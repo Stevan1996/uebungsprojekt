@@ -2,6 +2,8 @@ package lise.uebungsprojekt.gamePlatform.game.repository
 
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import lise.uebungsprojekt.gamePlatform.game.repository.developer.DeveloperEntity
+import lise.uebungsprojekt.gamePlatform.game.repository.developer.toDomain
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.PlatformEntity
 import lise.uebungsprojekt.gamePlatform.game.repository.platform.toDomain
 import lise.uebungsprojekt.gamePlatform.game.service.Developer

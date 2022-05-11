@@ -1,5 +1,6 @@
-package lise.uebungsprojekt.gamePlatform.game.repository
+package lise.uebungsprojekt.gamePlatform.game.repository.developer
 
+import lise.uebungsprojekt.gamePlatform.game.repository.GameEntity
 import lise.uebungsprojekt.gamePlatform.game.service.Developer
 import org.hibernate.annotations.NaturalId
 import javax.persistence.*
